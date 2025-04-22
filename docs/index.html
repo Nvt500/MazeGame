@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>Game</title>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/gl-matrix/2.8.1/gl-matrix-min.js"></script>
+        
+        <script src="main.js"></script>
+        
+        <script src="Window.js"></script>
+        
+        <script src="Buffer.js"></script>
+        <script src="Texture.js"></script>
+
+        <script src="Shader.js"></script>
+        <script src="ShaderProgram.js"></script>
+
+        <script src="Player.js"></script>
+        <script src="Cube.js"></script>
+
+        <script src="Layer.js"></script>
+        <script src="RotationLayer.js"></script>
+        
+        <script src="Maze.js"></script>
+    </head>
+    
+    <style>
+        * {
+            margin: 1%;
+        }
+        #overlay {
+            display: inline-flex;
+            flex-direction: column;
+            position: absolute;
+            left: 35px;
+            top: 35px;
+            background-color: rgba(0, 0, 0, 0.7);
+            color: white;
+            font-family: monospace;
+            padding: 1em;
+        }
+        #map {
+            display: inline-block;
+            border: 2px solid black;
+            padding: 2px 4px 2px 4px;
+        }
+    </style>
+
+    <body style="display: flex; align-items: flex-start;">
+        <div style="display: flex; flex-direction: column;">
+            <canvas id="glcanvas" width="640" height="480"></canvas>
+
+            <h3>Controls</h3>
+            <p>r: rotate everything</p>
+            <p>v: "wireframe" view</p>
+            <p>wasd: movement</p>
+            <p>ctrl/backspace/space & shift: move up and down respectively</p>
+            <p>Use the mouse to look around (click on the game to move camera)</p>
+        </div>
+
+        <div id="overlay">
+            <div style="text-wrap: nowrap;">Time: <span id="time"></span></div>
+            <div style="text-wrap: nowrap;">FPS: <span id="fps"></span></div>
+            <input id="playagain" type="button" value="Play Again?" style="display: none;" onclick="this.style.display = 'none'; requestAnimationFrame(main);">
+        </div>
+
+        <div id="ui" style="display: flex; flex-direction: column;">
+            <div style="display: flex; align-items: center;">
+                <input type="button" id="showmap" value="Show Map">
+                <label for="flight">Enable Flight</label>
+                <input type="checkbox" name="flight" id="canfly">
+                <input type="button" id="restart" value="Change Map Values" onclick="restart();" disabled>
+                <input type="button" id="default" value="Default Map Values" onclick="defaults();">
+            </div>
+            
+            <pre id="map" class=""></pre>
+
+            <div style="display: flex; align-items: center;">
+                <label for="mapwidth">Map Width</label>
+                <input type="number" id="mapwidth" name="mapwidth" min=1 max=999 value=15 onchange="document.querySelector('#restart').disabled = false;">
+                <label for="mapheight">Map Height</label>
+                <input type="number" id="mapheight" name="mapheight" min=1 max=999 value=15 onchange="document.querySelector('#restart').disabled = false;">
+            </div>
+
+            <div style="display: flex; align-items: center;">
+                <label for="minpathlength">Minimum Path Length</label>
+                <input type="number" id="minpathlength" name="minpathlength" min=1 max=999 value=20 onchange="document.querySelector('#restart').disabled = false;">
+                <label for="maxpathlength">Maximum Path Length</label>
+                <input type="number" id="maxpathlength" name="maxpathlength" min=1 max=999 value=50 onchange="document.querySelector('#restart').disabled = false;">
+            </div>
+
+            <table>
+                <thead>
+                    <td><label for="numinnerbranch">Number of inner branches</label></td>
+                    <td><label for="mininnerbranch">Minimum length of inner branch</label></td>
+                    <td><label for="maxinnerbranch">Maximum length of inner branch</label></td>
+                </thead>
+                <tbody>
+                    <td><input type="number" id="numinnerbranch" name="numinnerbranch" min=0 max=999 value=5 onchange="document.querySelector('#restart').disabled = false;"></td>
+                    <td><input type="number" id="mininnerbranch" name="mininnerbranch" min=0 max=999 value=0 onchange="document.querySelector('#restart').disabled = false;"></td>
+                    <td><input type="number" id="maxinnerbranch" name="maxinnerbranch" min=0 max=999 value=10 onchange="document.querySelector('#restart').disabled = false;"></td>
+                </tbody>
+            </table>
+
+            <table>
+                <thead>
+                    <td><label for="numouterbranch">Number of outer branches</label></td>
+                    <td><label for="minouterbranch">Minimum length of outer branch</label></td>
+                    <td><label for="maxouterbranch">Maximum length of outer branch</label></td>
+                </thead>
+                <tbody>
+                    <td><input type="number" id="numouterbranch" name="numouterbranch" min=0 max=999 value=5 onchange="document.querySelector('#restart').disabled = false;"></td>
+                    <td><input type="number" id="minouterbranch" name="minouterbranch" min=0 max=999 value=0 onchange="document.querySelector('#restart').disabled = false;"></td>
+                    <td><input type="number" id="maxouterbranch" name="maxouterbranch" min=0 max=999 value=5 onchange="document.querySelector('#restart').disabled = false;"></td>
+                </tbody>
+            </table>
+        </div>
+    </body>
+</html>
