@@ -3,7 +3,7 @@
 
 A simple maze game written in javascript using webgl and glMatrix. 
 
-Demo: <<INSERT LINK HERE\>>
+Demo: https://nvt500.github.io/MazeGame/
 
 It randomly generates a maze with a cubes as walls with a dungeon wall texture. At the end of the maze is a cube with a key texture which is the goal of the game.
 
